@@ -11,14 +11,40 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("=== Gestor de tareas ===");
-        System.out.println("1. Agregar tarea");
-        System.out.println("2. Listar tareas");
-        System.out.println("0. Salir");
 
         // EJERCICIO 1: repetir el menú con un do-while y resolver cada opción con un switch
-        int opcion = leerEntero("Elegí una opción: ");
-        System.out.println("Elegiste la opción " + opcion);
+        int opcion;
+        String[] tareas = new String[10];
+        int cantidad = 0;
+
+        do {
+            System.out.println();
+            System.out.println("=== Gestor de tareas ===");
+            System.out.println("1. Agregar tarea");
+            System.out.println("2. Listar tareas");
+            System.out.println("0. Salir");
+
+            opcion = leerEntero("Elegí una opción: ");
+
+            System.out.println("Elegiste la opción " + opcion);
+
+            switch (opcion) {
+                case 1:
+                    tareas[cantidad] = leerTexto("Titulo: ");
+                    cantidad++;
+                    break;
+                case 2:
+                    for (int i = 0; i < cantidad; i++) {
+                        System.out.println((i+1) + ". " + tareas[i]);
+                    }
+                    break;
+                case 0:
+                    System.out.println("Hasta luego!");
+                    break;
+                default:
+                    System.out.println("Opción inválida");
+            }
+        } while (opcion!= 0);
     }
 
     // ------------------------------------------------------------------
@@ -37,7 +63,9 @@ public class Main {
         return valor;
     }
 
-    /** Lee una línea de texto, sin espacios al principio ni al final. */
+    /**
+     * Lee una línea de texto, sin espacios al principio ni al final.
+     */
     private static String leerTexto(String mensaje) {
         System.out.print(mensaje);
         return scanner.nextLine().trim();
