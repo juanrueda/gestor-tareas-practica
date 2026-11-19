@@ -9,20 +9,16 @@ import java.util.Scanner;
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private static final String[] tareas = new String[10];
+    private static int cantidad = 0;
 
     public static void main(String[] args) {
 
         // EJERCICIO 1: repetir el menú con un do-while y resolver cada opción con un switch
         int opcion;
-        String[] tareas = new String[10];
-        int cantidad = 0;
 
         do {
-            System.out.println();
-            System.out.println("=== Gestor de tareas ===");
-            System.out.println("1. Agregar tarea");
-            System.out.println("2. Listar tareas");
-            System.out.println("0. Salir");
+            mostrarMenu();
 
             opcion = leerEntero("Elegí una opción: ");
 
@@ -30,13 +26,10 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    tareas[cantidad] = leerTexto("Titulo: ");
-                    cantidad++;
+                    agregarTareas();
                     break;
                 case 2:
-                    for (int i = 0; i < cantidad; i++) {
-                        System.out.println((i+1) + ". " + tareas[i]);
-                    }
+                    listarTareas();
                     break;
                 case 0:
                     System.out.println("Hasta luego!");
@@ -45,6 +38,25 @@ public class Main {
                     System.out.println("Opción inválida");
             }
         } while (opcion!= 0);
+    }
+
+    private static void mostrarMenu(){
+        System.out.println();
+        System.out.println("=== Gestor de tareas ===");
+        System.out.println("1. Agregar tarea");
+        System.out.println("2. Listar tareas");
+        System.out.println("0. Salir");
+    }
+
+    private static void agregarTareas() {
+        tareas[cantidad] = leerTexto("Titulo: ");
+        cantidad++;
+    }
+
+    private static void listarTareas() {
+        for (int i = 0; i < cantidad; i++) {
+            System.out.println((i+1) + ". " + tareas[i]);
+        }
     }
 
     // ------------------------------------------------------------------
