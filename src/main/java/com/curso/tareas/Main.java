@@ -83,9 +83,9 @@ public class Main {
         if (tareas.isEmpty()){
             System.out.println("No hay tareas");
         } else {
-            for (Tarea tarea : tareas.values()) {
-                System.out.println(tarea);
-            }
+            List<Tarea> listaTareas = new ArrayList<>(tareas.values());
+            listaTareas.sort((a,b) -> a.getId().compareTo(b.getId()));
+            listaTareas.forEach(t -> System.out.println(t));
         }
     }
 

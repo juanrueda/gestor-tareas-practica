@@ -11,7 +11,7 @@ public class Tarea {
         this.hecha = false;
     }
 
-    public long getId(){
+    public Long getId(){
         return this.id;
     }
 
