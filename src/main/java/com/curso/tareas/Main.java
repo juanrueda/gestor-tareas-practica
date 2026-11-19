@@ -26,7 +26,7 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    agregarTareas();
+                    agregarTarea();
                     break;
                 case 2:
                     listarTareas();
@@ -48,8 +48,7 @@ public class Main {
         System.out.println("0. Salir");
     }
 
-    private static void agregarTareas() {
-        String tituloTarea = leerTexto("Titulo: ");
+    private static void agregarTarea(String tituloTarea) {
         if (cantidad == tareas.length) {
             System.out.println("No entran mas tareas");
         } else if (tituloTarea.isEmpty()){
@@ -59,6 +58,11 @@ public class Main {
             cantidad++;
             System.out.println("Tarea agregada");
         }
+    }
+
+    private static void agregarTarea() {
+        String titulo = leerTexto("Titulo: ");
+        agregarTarea(titulo);
     }
 
     private static void listarTareas() {
