@@ -49,13 +49,25 @@ public class Main {
     }
 
     private static void agregarTareas() {
-        tareas[cantidad] = leerTexto("Titulo: ");
-        cantidad++;
+        String tituloTarea = leerTexto("Titulo: ");
+        if (cantidad == tareas.length) {
+            System.out.println("No entran mas tareas");
+        } else if (tituloTarea.isEmpty()){
+            System.out.println("El titulo no puede estar vacio");
+        } else {
+            tareas[cantidad] = tituloTarea;
+            cantidad++;
+            System.out.println("Tarea agregada");
+        }
     }
 
     private static void listarTareas() {
-        for (int i = 0; i < cantidad; i++) {
-            System.out.println((i+1) + ". " + tareas[i]);
+        if (cantidad == 0){
+            System.out.println("No hay tareas");
+        } else {
+            for (int i = 0; i < cantidad; i++) {
+                System.out.println((i + 1) + ". " + tareas[i]);
+            }
         }
     }
 
