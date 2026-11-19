@@ -36,6 +36,9 @@ public class Main {
                 case 3:
                     completarTarea();
                     break;
+                case 4:
+                    eliminarTarea();
+                    break;
                 case 0:
                     System.out.println("Hasta luego!");
                     break;
@@ -51,6 +54,7 @@ public class Main {
         System.out.println("1. Agregar tarea");
         System.out.println("2. Listar tareas");
         System.out.println("3. Completar tarea");
+        System.out.println("4. Eliminar tarea");
 
         System.out.println("0. Salir");
     }
@@ -90,6 +94,17 @@ public class Main {
         } else {
             tarea.completar();
             System.out.print("Tarea completada");
+        }
+    }
+
+    private static void eliminarTarea() {
+        long id = leerEntero("Id de la tarea: ");
+        Tarea tarea = tareas.get(id);
+        if (tarea == null) {
+            System.out.println("No existea una tarea con Id" + id);
+        } else {
+            tareas.remove(id);
+            System.out.println("Tarea eliminada");
         }
     }
 
