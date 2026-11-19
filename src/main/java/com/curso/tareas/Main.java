@@ -1,8 +1,7 @@
 package com.curso.tareas;
 import com.curso.tareas.model.Tarea;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+
+import java.util.*;
 
 /**
  * Gestor de tareas en consola: punto de partida de la charla 1.
@@ -39,6 +38,9 @@ public class Main {
                 case 4:
                     eliminarTarea();
                     break;
+                case 5:
+                    buscarTarea();
+                    break;
                 case 0:
                     System.out.println("Hasta luego!");
                     break;
@@ -55,6 +57,7 @@ public class Main {
         System.out.println("2. Listar tareas");
         System.out.println("3. Completar tarea");
         System.out.println("4. Eliminar tarea");
+        System.out.println("5. Buscar tarea");
 
         System.out.println("0. Salir");
     }
@@ -72,7 +75,7 @@ public class Main {
     }
 
     private static void agregarTarea() {
-        String titulo = leerTexto();
+        String titulo = leerTexto("Titulo: ");
         agregarTarea(titulo);
     }
 
@@ -101,11 +104,26 @@ public class Main {
         long id = leerEntero("Id de la tarea: ");
         Tarea tarea = tareas.get(id);
         if (tarea == null) {
-            System.out.println("No existea una tarea con Id" + id);
+            System.out.println("No existe una tarea con Id" + id);
         } else {
             tareas.remove(id);
             System.out.println("Tarea eliminada");
         }
+    }
+
+    private static void buscarTarea() {
+        String nombre = leerTexto("Nombre de la tarea: ");
+        List<Tarea> encontradas = new ArrayList<>();
+
+        for (Tarea tarea : tareas.values()) {
+            if (tarea.getTitulo().toLowerCase().contains(nombre)) {
+                encontradas.add(tarea);
+            }
+        }
+        if (encontradas.isEmpty()) {
+            System.out.println("No se encontraron tareas");
+        }
+        encontradas.forEach(t -> System.out.println(t));
     }
 
     // ------------------------------------------------------------------
@@ -127,8 +145,8 @@ public class Main {
     /**
      * Lee una línea de texto, sin espacios al principio ni al final.
      */
-    private static String leerTexto() {
-        System.out.print("Titulo: ");
+    private static String leerTexto(String texto) {
+        System.out.print(texto);
         return scanner.nextLine().trim();
     }
 }
