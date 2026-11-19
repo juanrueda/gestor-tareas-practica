@@ -1,5 +1,7 @@
 package com.curso.tareas;
-
+import com.curso.tareas.model.Tarea;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -9,8 +11,8 @@ import java.util.Scanner;
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final String[] tareas = new String[10];
-    private static int cantidad = 0;
+    private static final Map<Long, Tarea> tareas = new HashMap<>();
+    private static long proximoId = 1;
 
     public static void main(String[] args) {
 
@@ -31,6 +33,9 @@ public class Main {
                 case 2:
                     listarTareas();
                     break;
+                case 3:
+                    completarTarea();
+                    break;
                 case 0:
                     System.out.println("Hasta luego!");
                     break;
@@ -45,33 +50,46 @@ public class Main {
         System.out.println("=== Gestor de tareas ===");
         System.out.println("1. Agregar tarea");
         System.out.println("2. Listar tareas");
+        System.out.println("3. Completar tarea");
+
         System.out.println("0. Salir");
     }
 
     private static void agregarTarea(String tituloTarea) {
-        if (cantidad == tareas.length) {
-            System.out.println("No entran mas tareas");
-        } else if (tituloTarea.isEmpty()){
-            System.out.println("El titulo no puede estar vacio");
+        if (tituloTarea.isEmpty()){
+            System.out.println("El título no puede estar vacío");
         } else {
-            tareas[cantidad] = tituloTarea;
-            cantidad++;
-            System.out.println("Tarea agregada");
+            Tarea tarea = new Tarea(proximoId, tituloTarea);
+            tareas.put(tarea.getId(), tarea);
+            proximoId++;
+
+            System.out.println("Tarea agregada con Id " + tarea.getId());
         }
     }
 
     private static void agregarTarea() {
-        String titulo = leerTexto("Titulo: ");
+        String titulo = leerTexto();
         agregarTarea(titulo);
     }
 
     private static void listarTareas() {
-        if (cantidad == 0){
+        if (tareas.isEmpty()){
             System.out.println("No hay tareas");
         } else {
-            for (int i = 0; i < cantidad; i++) {
-                System.out.println((i + 1) + ". " + tareas[i]);
+            for (Tarea tarea : tareas.values()) {
+                System.out.println(tarea);
             }
+        }
+    }
+
+    private static void completarTarea() {
+        long id = leerEntero("Id de la tarea: ");
+        Tarea tarea = tareas.get(id);
+        if (tarea == null) {
+            System.out.println("No existe la tarea con Id " + id);
+        } else {
+            tarea.completar();
+            System.out.print("Tarea completada");
         }
     }
 
@@ -80,8 +98,8 @@ public class Main {
     // ------------------------------------------------------------------
 
     /** Lee un número; si el usuario escribe otra cosa, lo vuelve a pedir. */
-    private static int leerEntero(String mensaje) {
-        System.out.print(mensaje);
+    private static int leerEntero(String texto) {
+        System.out.print(texto);
         while (!scanner.hasNextInt()) {
             scanner.nextLine();
             System.out.print("Ingresá un número: ");
@@ -94,8 +112,8 @@ public class Main {
     /**
      * Lee una línea de texto, sin espacios al principio ni al final.
      */
-    private static String leerTexto(String mensaje) {
-        System.out.print(mensaje);
+    private static String leerTexto() {
+        System.out.print("Titulo: ");
         return scanner.nextLine().trim();
     }
 }
