@@ -1,11 +1,11 @@
 package com.curso.tareas.model;
 
 public class Tarea {
-    private final long id;
+    private final Long id;
     private final String titulo;
     private boolean hecha;
 
-    public Tarea(long id, String titulo) {
+    public Tarea(Long id, String titulo) {
         this.id = id;
         this.titulo = titulo;
         this.hecha = false;

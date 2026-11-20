@@ -1,5 +1,7 @@
 package com.curso.tareas;
 import com.curso.tareas.model.Tarea;
+import com.curso.tareas.repository.TareaRepositoryEnMemoria;
+import com.curso.tareas.service.TareaService;
 
 import java.util.*;
 
@@ -10,8 +12,7 @@ import java.util.*;
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final Map<Long, Tarea> tareas = new HashMap<>();
-    private static long proximoId = 1;
+    private static final TareaService service = new TareaService(new TareaRepositoryEnMemoria());
 
     public static void main(String[] args) {
 
@@ -62,68 +63,38 @@ public class Main {
         System.out.println("0. Salir");
     }
 
-    private static void agregarTarea(String tituloTarea) {
-        if (tituloTarea.isEmpty()){
-            System.out.println("El título no puede estar vacío");
-        } else {
-            Tarea tarea = new Tarea(proximoId, tituloTarea);
-            tareas.put(tarea.getId(), tarea);
-            proximoId++;
-
-            System.out.println("Tarea agregada con Id " + tarea.getId());
-        }
-    }
-
     private static void agregarTarea() {
-        String titulo = leerTexto("Titulo: ");
-        agregarTarea(titulo);
+        Tarea tarea = service.crear(leerTexto("Titulo: "));
+        System.out.println("Tarea agregada con id " + tarea.getId());
     }
 
     private static void listarTareas() {
-        if (tareas.isEmpty()){
-            System.out.println("No hay tareas");
-        } else {
-            List<Tarea> listaTareas = new ArrayList<>(tareas.values());
-            listaTareas.sort((a,b) -> a.getId().compareTo(b.getId()));
-            listaTareas.forEach(t -> System.out.println(t));
-        }
+        mostrar(service.listar());
     }
 
     private static void completarTarea() {
-        long id = leerEntero("Id de la tarea: ");
-        Tarea tarea = tareas.get(id);
-        if (tarea == null) {
-            System.out.println("No existe la tarea con Id " + id);
-        } else {
-            tarea.completar();
-            System.out.print("Tarea completada");
-        }
+        service.completar(leerId());
+        System.out.println("Tarea completada");
     }
 
     private static void eliminarTarea() {
-        long id = leerEntero("Id de la tarea: ");
-        Tarea tarea = tareas.get(id);
-        if (tarea == null) {
-            System.out.println("No existe una tarea con Id" + id);
-        } else {
-            tareas.remove(id);
-            System.out.println("Tarea eliminada");
-        }
+        service.eliminar(leerId());
+        System.out.println("Tarea eliminada");
     }
 
     private static void buscarTarea() {
-        String nombre = leerTexto("Nombre de la tarea: ");
-        List<Tarea> encontradas = new ArrayList<>();
+        mostrar(service.buscar(leerTexto("Texto a buscar: ")));
+    }
 
-        for (Tarea tarea : tareas.values()) {
-            if (tarea.getTitulo().toLowerCase().contains(nombre)) {
-                encontradas.add(tarea);
-            }
+    private static void mostrar(List<Tarea> tareas) {
+        if (tareas.isEmpty()) {
+            System.out.println("No hay tareas");
         }
-        if (encontradas.isEmpty()) {
-            System.out.println("No se encontraron tareas");
-        }
-        encontradas.forEach(t -> System.out.println(t));
+        tareas.forEach(tarea -> System.out.println(tarea));
+    }
+
+    private static Long leerId() {
+        return (long) leerEntero("Id de la tarea ");
     }
 
     // ------------------------------------------------------------------
